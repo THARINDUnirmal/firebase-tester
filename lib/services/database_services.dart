@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_fire_base_app/models/task_model.dart';
+import 'package:flutter/material.dart';
 
 class DatabaseServices {
   final CollectionReference ref = FirebaseFirestore.instance.collection("task");
@@ -29,5 +30,14 @@ class DatabaseServices {
                   doc.data() as Map<String, dynamic>, doc.id))
               .toList(),
         );
+  }
+
+  //delete task from data base
+  Future<void> deleteData(String id) async {
+    try {
+      await ref.doc(id).delete();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           content: TextField(
+            maxLines: 1,
             controller: _nameContraller,
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -43,6 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: [
             TextButton(
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll<Color>(
+                Colors.lightGreenAccent,
+              )),
               onPressed: () async {
                 await DatabaseServices().addTask(_nameContraller.text);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -65,6 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               child: Text(
                 "Submit",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
               ),
             ),
             TextButton(
@@ -115,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Card(
                   child: ListTile(
                     title: Text(
+                      maxLines: 3,
                       indexData.name,
                       style: TextStyle(
                         fontSize: 25,
@@ -124,9 +133,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     subtitle: Text(
                       indexData.createDate.toString(),
                     ),
-                    trailing: Icon(
-                      Icons.delete_outline,
-                      size: 30,
+                    trailing: IconButton(
+                      onPressed: () async {
+                        await DatabaseServices().deleteData(indexData.id);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.blueAccent,
+                            duration: Duration(
+                              seconds: 2,
+                            ),
+                            content: Text(
+                              "Data delete successfull !",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.delete_outline,
+                        size: 30,
+                      ),
                     ),
                   ),
                 );
